@@ -23,6 +23,16 @@ then
 
   cp $CONF_DIR/config.json $CONF_DIR/config.json.origin
 
+  if [ -f /config/config.json.import.migration ]
+  then
+    # Move include docker configuration
+    cp /config/config.json.import.migration $CONF_DIR/config.json
+    /opt/cronicle/bin/storage-migrate.js
+    cp /config/config.json.import.final $CONF_DIR/config.json
+    cp /config/config.json.import.final $DATA_DIR/config.json.import
+    rm /config/config.json.import.migration
+  fi
+
   if [ -f $DATA_DIR/config.json.import ]
   then
     # Move in custom configuration

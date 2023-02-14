@@ -14,6 +14,7 @@ RUN        mkdir -p /opt/cronicle \
                 && curl -L https://github.com/jhuckaby/Cronicle/archive/v${CRONICLE_VERSION}.tar.gz | tar zxvf - --strip-components 1 \
                 && npm install \
                 && node bin/build.js dist \
+                && npm install --save sqlite3 \
                 && rm -Rf /root/.npm
 
 # Runtime user
@@ -21,6 +22,8 @@ RUN        mkdir -p /opt/cronicle \
 # RUN        adduser cronicle docker
 WORKDIR    /opt/cronicle/
 ADD        docker/entrypoint.sh /entrypoint.sh
+ADD	   docker/config.json.import.migration /config/config.json.import.migration
+ADD        docker/config.json.import.final /config/config.json.import.final
 
 EXPOSE     3012
 
